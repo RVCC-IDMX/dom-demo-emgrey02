@@ -42,20 +42,41 @@ btn.addEventListener("mouseout", (e) => {
 const myForm = document.querySelector("#my-form");
 const nameInput = document.querySelector("#name");
 const emailInput = document.querySelector("#email");
-const msg = document.querySelector(".msg");
+let msg = document.querySelector(".msg");
 const userList = document.querySelector("#users");
 
-myForm.addEventListener("submit", onSubmit);
-
-function onSubmit(e) {
-  e.preventDefault();
-
+let fieldIsEmpty = () => {
   if (nameInput.value === "" || emailInput.value === "") {
     msg.classList.add("error");
-    msg.innerText = "Please enter all fields";
+    msg.innerText = "Please fill out both fields";
+    setTimeout(() => {
+      msg.classList.remove("error");
+      msg.innerText = "";
+    }, 3000);
 
-    setTimeout(() => msg.remove(), 3000);
+    return true;
+  }
+  return false;
+};
+
+let emailIsInvalid = () => {
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+    return false;
   } else {
+    msg.classList.add("error");
+    msg.innerText = "Please enter a valid email";
+    setTimeout(() => {
+      msg.classList.remove("error");
+      msg.innerText = "";
+    }, 3000);
+    return true;
+  }
+};
+
+let onSubmit = (e) => {
+  e.preventDefault();
+
+  if (!fieldIsEmpty() && !emailIsInvalid()) {
     const li = document.createElement("li");
     li.appendChild(
       document.createTextNode(`${nameInput.value} : ${emailInput.value}`)
@@ -67,4 +88,6 @@ function onSubmit(e) {
     nameInput.value = "";
     emailInput.value = "";
   }
-}
+};
+
+myForm.addEventListener("submit", onSubmit);
