@@ -95,10 +95,10 @@ let onSubmit = (e) => {
 
     userList.appendChild(li);
 
+    handleSubmit();
     //clear fields
     nameInput.value = "";
     emailInput.value = "";
-    handleSubmit();
   }
 };
 
